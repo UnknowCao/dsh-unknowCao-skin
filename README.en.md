@@ -83,7 +83,9 @@ The one exception is the top of the ladder: the product's light surfaces are pur
 
 **③ Sky-light layer** — a full-viewport gradient wash on `body::after`, `pointer-events: none`. The product does not use that slot.
 
-**④ Brand layer** — four writable entry points, all reversible: `sidebar.brand.name`, `sidebar.brand.mark` and `conversation.hero.brand.mark` are `single` slots, so registering shadows the product's occupant; the tab title goes through `document.title`, because the shell's static HTML hardcodes `<title>DeepSeek Harness</title>` and the frontend bundle never rewrites it — the one literal piece of brand text in the GUI.
+**④ Brand layer** — six reversible entry points. In the page, three `single` slots (`sidebar.brand.name`, `sidebar.brand.mark`, `conversation.hero.brand.mark`) shadow the product's occupants; the **tab title** goes through `document.title` (the shell hardcodes `<title>DeepSeek Harness</title>` and the frontend bundle never rewrites it). The **Edge app window title** and the **tab icon** are out of `document.title`'s reach — the window is named from `manifest.webmanifest` (the product's says `DeepSeek Harness` with `display: fullscreen`) and the icon is the whale at `/favicon.svg` — so the host half shadows both with one exact route each: a manifest with no `icons`, and a transparent SVG that draws nothing.
+
+Why a route can shadow a static file: the product mounts its built frontend through `webServer.registerFallback(...)` — a *fallback seat*, consulted only when no exact route matched.
 
 ### Where the line is
 
@@ -156,12 +158,12 @@ Restart and the interface is byte-for-byte back to its previous palette.
 dsh-unknowcao-skin/
 ├── package.json            dsh.bundle.patch + dsh.client.platform: web
 ├── cordis.patch.yml        inserts one row (the package root) into the profile
-├── index.js                host half: one boot log line, deliberately nothing else
+├── index.js                host half: two exact routes (manifest + favicon) and one boot log line
 ├── client.js               browser half: ALIAS_TOKENS (contract) + SKIN_CSS (system + sky light) + brand
 └── test/palette-audit.mjs  audit: loads the real bundle, reconciles coverage / drift / contrast / brand
 ```
 
-The host half exists for one reason — **how the browser half is discovered**. client-modules resolves each *mounted row* back to its package.json, finds `dsh.client.platform: web` there, and only then serves `exports["./client"]` at `/plugins/dsh-unknowcao-skin/client.js`. One row buys both faces.
+The host half has two jobs. One is **how the browser half is discovered**: client-modules resolves each *mounted row* back to its package.json, finds `dsh.client.platform: web` there, and only then serves `exports["./client"]` at `/plugins/dsh-unknowcao-skin/client.js` — one row buys both faces. The other is the **app window title and tab icon**, which `document.title` cannot reach and only the server can change.
 
 ## License
 

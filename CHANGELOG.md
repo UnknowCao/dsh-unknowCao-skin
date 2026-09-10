@@ -3,6 +3,21 @@
 本插件的每一次风格改动都记在这里。皮肤换过三轮风格，包名一直没跟着改（`dsh-unknowcao-skin` 起于第一轮的宣纸皮肤），
 原因见每条条目。
 
+## 0.5.1 — 应用窗标题与标签页图标
+
+浏览器标签页的标题由 `document.title` 管，但 **Edge 应用窗（dsh-dock 用 `--app=` 打开的那个）的标题栏名字来自
+`manifest.webmanifest` 的 `name`**，标签页图标来自 `/favicon.svg` 的鲸鱼——这两处 `document.title` 都够不到。
+
+- 宿主半各注册一条精确路由：manifest 换成 `name: "UnknowCao Harness"`、不带 `icons` 的版本；favicon 换成不画
+  任何东西的透明 SVG
+- 两条路由都能盖住产品的静态文件，因为产品的前端产物是挂在 `webServer.registerFallback(...)` 这个**兜底席位**上的
+
+宿主半从「一行日志、刻意不注册任何东西」变成了「两条路由」——这是这次唯一的设计变更，写进了 README 与 index.js 的头注释。
+审计新增三条断言：两个半边的品牌名必须相等（它们是不同模块格式，无法互相 import）、manifest 路径、favicon 路径，
+以及 manifest 不得再声明 icons。
+
+注意：改 manifest 不会刷新**已经打开**的应用窗，要关掉重开（桌面快捷方式或托盘）。
+
 ## 0.5.0 — 彩度纪律
 
 上一版的问题不是配色难看，是彩度失控：表面色阶用到 28%–55% 的饱和度，深色模式整片变成饱和钢蓝

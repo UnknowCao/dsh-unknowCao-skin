@@ -284,6 +284,36 @@ const BRAND_SLOTS = ['sidebar.brand.name', 'sidebar.brand.mark', 'conversation.h
   else fail('brand', `page title is ${JSON.stringify(globalThis.document.title)}, expected ${JSON.stringify(EXPECTED_BRAND)}`)
 }
 
+// ── the two halves must agree on the brand ──
+// client.js and index.js are different module formats and cannot import each other,
+// so the name is declared twice: BRAND.name (document.title, sidebar) and BRAND_NAME
+// (the web app manifest, which is what the Edge app window is titled from). Assert
+// the equality rather than trusting two hand-kept copies to stay in step.
+{
+  const hostSource = readFileSync(join(PLUGIN, 'index.js'), 'utf8')
+  const declared = /export const BRAND_NAME = '([^']*)'/.exec(hostSource)
+  if (declared === null) fail('brand', 'index.js declares no BRAND_NAME for the manifest')
+  else if (declared[1] === EXPECTED_BRAND) pass('brand', `host half agrees on the brand (${JSON.stringify(declared[1])})`)
+  else fail('brand', `host half says ${JSON.stringify(declared[1])} but the client half renders ${JSON.stringify(EXPECTED_BRAND)}`)
+
+  const path = /const MANIFEST_PATH = '([^']*)'/.exec(hostSource)
+  if (path === null) fail('brand', 'index.js declares no MANIFEST_PATH')
+  else if (path[1] === '/manifest.webmanifest') pass('brand', `host half shadows ${path[1]}`)
+  else fail('brand', `host half shadows ${JSON.stringify(path[1])}, expected /manifest.webmanifest`)
+
+  // The tab icon is the product's whale; the skin blanks it, so the host half must
+  // shadow the favicon path too or the image survives next to the new name.
+  const icon = /const ICON_PATH = '([^']*)'/.exec(hostSource)
+  if (icon === null) fail('brand', 'index.js declares no ICON_PATH')
+  else if (icon[1] === '/favicon.svg') pass('brand', `host half blanks ${icon[1]}`)
+  else fail('brand', `host half blanks ${JSON.stringify(icon[1])}, expected /favicon.svg`)
+
+  // A manifest that still lists icons would put the product's mark back into the
+  // app window and taskbar, undoing the blank favicon.
+  if (/^\s*icons:/m.test(hostSource)) fail('brand', 'the host manifest still declares icons')
+  else pass('brand', 'host manifest declares no icons')
+}
+
 // ── colour sanity ──
 const css = parseSkinCss(bundle.css)
 let badColours = 0

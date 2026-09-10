@@ -83,7 +83,9 @@
 
 **③ 天光层** — `body::after` 铺满视口的渐变光，`pointer-events:none`，产品没占用这个位置。
 
-**④ 品牌层** — 四个可写入口，全部可还原：`sidebar.brand.name`、`sidebar.brand.mark`、`conversation.hero.brand.mark` 三个 `single` 槽注册即遮蔽产品自带的占用者；标签页标题走 `document.title`——外壳 HTML 里写死了 `<title>DeepSeek Harness</title>`，而前端 bundle 从不改它，所以它是 GUI 上唯一一处真正写死的品牌文字。
+**④ 品牌层** — 六个可还原的入口。界面里三个 `single` 槽（`sidebar.brand.name`、`sidebar.brand.mark`、`conversation.hero.brand.mark`）注册即遮蔽产品自带的占用者；**标签页标题**走 `document.title`（外壳 HTML 里写死了 `<title>DeepSeek Harness</title>`，前端 bundle 从不改它）；**Edge 应用窗标题栏**和**标签页图标**`document.title` 够不到——应用窗的名字来自 `manifest.webmanifest` 的 `name`（产品那份写的是 `DeepSeek Harness` 且 `display: fullscreen`），图标来自 `/favicon.svg` 的鲸鱼——所以这两个由宿主半各注册一条精确路由接管：manifest 换成不带 `icons` 的版本，favicon 换成一个不画任何东西的透明 SVG。
+
+路由为什么能盖住静态文件：产品的前端产物是用 `webServer.registerFallback(...)` 挂上去的**兜底席位**，只在没有精确路由命中时才轮到它。
 
 ### 边界收在哪
 
@@ -156,12 +158,12 @@ dsh plugin --profile web remove dsh-unknowcao-skin
 dsh-unknowcao-skin/
 ├── package.json            dsh.bundle.patch + dsh.client.platform: web
 ├── cordis.patch.yml        往 profile 里插一行（包根）
-├── index.js                宿主半：一行启动日志，刻意不做别的
+├── index.js                宿主半：两条精确路由（manifest + favicon）+ 一行启动日志
 ├── client.js               浏览器半：ALIAS_TOKENS（契约层）+ SKIN_CSS（系统层 + 天光层）+ 品牌层
 └── test/palette-audit.mjs  审计：加载真 bundle，对账覆盖率 / 漂移 / 对比度 / 品牌槽
 ```
 
-宿主半存在的唯一原因是**浏览器半的发现方式**：client-modules 顺着"已挂载的行"回溯到包的 `package.json`，读到 `dsh.client.platform: web` 才把 `exports["./client"]` 服务到 `/plugins/dsh-unknowcao-skin/client.js`。一行同时买到两个面。
+宿主半有两个职责。一是**浏览器半的发现方式**：client-modules 顺着"已挂载的行"回溯到包的 `package.json`，读到 `dsh.client.platform: web` 才把 `exports["./client"]` 服务到 `/plugins/dsh-unknowcao-skin/client.js`——一行同时买到两个面。二是**应用窗与标签页图标**：那两个位置 `document.title` 够不到，只有服务端能改。
 
 ## 许可
 
