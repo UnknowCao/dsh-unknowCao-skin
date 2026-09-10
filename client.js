@@ -297,9 +297,9 @@ html body[data-ds-dark-theme]::after {
      * ═══════════════════════════════════════════════════════════════════════ */
     /**
      * 品牌名。产品原文是「DeepSeek Harness」——品牌词换成自己的，产品词「Harness」
-     * 保留。只想要品牌本身就把 name 改成 'UnknowCao'。
+     * 保留。只想要品牌本身就把 name 改成 'UnKnowCao'。
      */
-    const BRAND = { name: 'UnknowCao Harness', seal: 'U' }
+    const BRAND = { name: 'UnKnowCao Harness', seal: 'U' }
     /**
      * 浏览器标签页标题。产品的外壳 HTML 写死了 `<title>DeepSeek Harness</title>`，但
      * 前端 bundle 现在**也会**写它：AppFrame 里那个 DocumentTitle 组件

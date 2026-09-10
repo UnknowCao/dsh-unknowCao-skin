@@ -51,7 +51,7 @@ It also closed a contrast hole the product ships: dark popover secondary text go
 
 **Type:** geometric sans (Segoe UI Variable / system stack), headings back in the same family. NIO's identity lives in colour and whitespace, not in a typeface — so this version does not invent one.
 **Sky light:** a very faint wash from the top of the viewport, fading by a third of the way down; in dark mode it becomes cockpit ambient light. 5% / 7% alpha — it only gives the flat plane a light direction.
-**Brand:** the sidebar becomes a "sky — horizon — earth" tile plus `UnknowCao Harness`; so does the browser tab title.
+**Brand:** the sidebar becomes a "sky — horizon — earth" tile plus `UnKnowCao Harness`; so does the browser tab title.
 
 ### Contrast — measured, not estimated
 
@@ -134,7 +134,7 @@ Restart and the interface is byte-for-byte back to its previous palette.
 - **Cooler light theme:** move `--dsw-static-neutral-bluish-00` (the tint of the near-white) and `-50` (sidebar) together. Push too far and tertiary text breaks first.
 - **More "cockpit" in dark:** press `--dsw-static-neutral-bluish-950` (page) down and take `-875` / `-850` (surfaces) with it. Do not touch `-50` — in dark mode that is the body text colour — and **do not darken `-600`**: it is the dark caption colour, and a small push takes it from 4.9:1 to 4.1:1 (we measured that one the hard way).
 - **Turn the sky light off:** delete the two `html body::after` blocks and only flat colour remains.
-- **Change the brand:** `BRAND = { name: 'UnknowCao Harness', seal: 'U' }`; the mark's gradient is `MARK_SKY`. Keep `EXPECTED_BRAND` in the audit in sync or it fails immediately.
+- **Change the brand:** `BRAND = { name: 'UnKnowCao Harness', seal: 'U' }`; the mark's gradient is `MARK_SKY`. Keep `EXPECTED_BRAND` in the audit in sync or it fails immediately.
 - **Keep the product brand:** `BRAND = null`.
 
 ---

@@ -253,7 +253,7 @@ for (const service of ['theme', 'slots']) {
 
 // ── brand slots ──
 /** The brand this skin pins. Changing it must be a deliberate edit here too, not a drift. */
-const EXPECTED_BRAND = 'UnknowCao Harness'
+const EXPECTED_BRAND = 'UnKnowCao Harness'
 const BRAND_SLOTS = ['sidebar.brand.name', 'sidebar.brand.mark', 'conversation.hero.brand.mark']
 {
   const registered = new Set(bundle.registrations.map((entry) => entry.key))

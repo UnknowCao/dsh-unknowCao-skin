@@ -51,7 +51,7 @@
 
 **排版**：几何无衬线（Segoe UI Variable / 系统栈），标题回到同一族。蔚来的身份在色与留白，不在字——所以这一版不发明字体。
 **天光**：视口顶部一层极淡的天光，向下三分之一处化开；深色下换成座舱氛围灯。5% / 7% 的不透明度，只给平面一个光源方向。
-**品牌**：侧栏换成一块「天—地平线—地」的方印 + `UnknowCao Harness`；浏览器标签页标题同理。
+**品牌**：侧栏换成一块「天—地平线—地」的方印 + `UnKnowCao Harness`；浏览器标签页标题同理。
 
 ### 对比度（实跑，非估算）
 
@@ -134,7 +134,7 @@ dsh plugin --profile web remove dsh-unknowcao-skin
 - **浅色底再冷一点**：动 `--dsw-static-neutral-bluish-00`（近白的色相）与 `-50`（侧栏），两者一起挪。挪太多先跌破的是三级文字。
 - **深色想更「座舱」**：`--dsw-static-neutral-bluish-950`（页面底）往下压，`-875` / `-850`（卡面）跟着压；别动 `-50`——深色下它是正文色。**`-600` 也别压暗**：它是深色下的 caption 色，压暗一点就从 4.9:1 掉到 4.1:1（这条是踩过的）。
 - **天光想关掉**：删掉 `html body::after` 那两块，视觉上只剩纯色。
-- **改品牌**：`BRAND = { name: 'UnknowCao Harness', seal: 'U' }`，标记渐变在 `MARK_SKY`。审计里的 `EXPECTED_BRAND` 要同步，否则立刻报失败。
+- **改品牌**：`BRAND = { name: 'UnKnowCao Harness', seal: 'U' }`，标记渐变在 `MARK_SKY`。审计里的 `EXPECTED_BRAND` 要同步，否则立刻报失败。
 - **不换品牌**：`BRAND = null`。
 
 ---
