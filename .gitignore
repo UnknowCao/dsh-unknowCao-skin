@@ -1,0 +1,13 @@
+# Build output and dependencies — this package ships hand-written source, no build step.
+node_modules/
+dist/
+lib/
+
+# Logs and editor noise
+*.log
+npm-debug.log*
+pnpm-debug.log*
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
