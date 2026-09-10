@@ -60,10 +60,20 @@ async function loadBundle() {
   const installed = []
   const registrations = []
   globalThis.window = { __ModuleLoader__: { load: (value) => { definition = value } } }
+  // `document.title` is an accessor over the <title> element in a real browser, so a
+  // write is only observable where the tab reads it if the stub models that element.
+  // The product's AppFrame rewrites the property whenever the session title changes,
+  // and the stub has to be able to play that write back to mean anything.
+  const titleElement = { textContent: '' }
   globalThis.document = {
     head: { appendChild: (element) => { installed.push(element) } },
     createElement: () => ({ id: '', textContent: '', parentNode: null }),
   }
+  Object.defineProperty(globalThis.document, 'title', {
+    configurable: true,
+    get: () => titleElement.textContent,
+    set: (value) => { titleElement.textContent = String(value) },
+  })
   // The bundle is side-effecting; importing it is the point.
   await import(pathToFileURL(join(PLUGIN, 'client.js')).href)
   if (definition === undefined) throw new Error('client.js never called window.__ModuleLoader__.load')
@@ -92,7 +102,7 @@ async function loadBundle() {
   })
   const style = installed[0]
   if (style === undefined) throw new Error('client.js installed no stylesheet')
-  return { css: style.textContent, styleId: style.id, tokens, effects, registrations, inject: plugin.inject }
+  return { css: style.textContent, styleId: style.id, tokens, effects, registrations, inject: plugin.inject, titleElement }
 }
 
 /* ── colour helpers ───────────────────────────────────────────────────────── */
@@ -278,10 +288,17 @@ const BRAND_SLOTS = ['sidebar.brand.name', 'sidebar.brand.mark', 'conversation.h
     else fail('brand', 'hero brand mark dropped the host className — headline geometry would shift')
   }
 
-  // The shell ships <title>DeepSeek Harness</title> as static HTML; nothing in the
-  // frontend rewrites it, so the skin has to.
-  if (globalThis.document.title === EXPECTED_BRAND) pass('brand', `page title set to ${JSON.stringify(EXPECTED_BRAND)}`)
-  else fail('brand', `page title is ${JSON.stringify(globalThis.document.title)}, expected ${JSON.stringify(EXPECTED_BRAND)}`)
+  // The shell ships <title>DeepSeek Harness</title> as static HTML, and the product's
+  // AppFrame now rewrites <title> as well. A one-shot write therefore loses to the first
+  // generated session title, so the tab has to be asserted twice: as written, and again
+  // after the product's own write has been played back.
+  const tabTitle = () => bundle.titleElement.textContent
+  if (tabTitle() === EXPECTED_BRAND) pass('brand', `page title set to ${JSON.stringify(EXPECTED_BRAND)}`)
+  else fail('brand', `page title is ${JSON.stringify(tabTitle())}, expected ${JSON.stringify(EXPECTED_BRAND)}`)
+
+  globalThis.document.title = '分析浏览器标签为deepseek harness原因 — DeepSeek Harness'
+  if (tabTitle() === EXPECTED_BRAND) pass('brand', `page title still ${JSON.stringify(EXPECTED_BRAND)} after the product rewrites it`)
+  else fail('brand', `page title became ${JSON.stringify(tabTitle())} after the product rewrote it — the skin has to hold it, not write it once`)
 }
 
 // ── colour sanity ──

@@ -301,10 +301,11 @@ html body[data-ds-dark-theme]::after {
      */
     const BRAND = { name: 'UnknowCao Harness', seal: 'U' }
     /**
-     * 浏览器标签页标题。产品的外壳 HTML 里写死了 `<title>DeepSeek Harness</title>`，
-     * 而前端 bundle 从不改它（全仓找不到一处 document.title）——所以它是 GUI 上唯一
-     * 一处真正写死的品牌文字，也是唯一一处必须由皮肤来改的。取值直接跟随品牌名，
-     * 两处不会各自漂。
+     * 浏览器标签页标题。产品的外壳 HTML 写死了 `<title>DeepSeek Harness</title>`，但
+     * 前端 bundle 现在**也会**写它：AppFrame 里那个 DocumentTitle 组件
+     * （dsh-client-ui-layout）每逢会话标题变化就写一次
+     * `document.title = `${title} — DeepSeek Harness``。所以这一处必须由皮肤**持有**，
+     * 写一次是不够的——见下方 apply 里的访问器接管。取值直接跟随品牌名，两处不会各自漂。
      */
     const DOCUMENT_TITLE = BRAND.name
     /**
@@ -400,12 +401,30 @@ html body[data-ds-dark-theme]::after {
         // the disposer to this fiber, which is what puts the product's own mark and
         // wordmark back when the skin unloads.
         if (BRAND !== null) {
-          // The shell's <title> is static HTML the frontend never touches; remember
-          // what it was so unloading puts it back byte for byte.
+          // 页面标题要「持有」，不能只写一次：产品的 AppFrame 会渲染一个 DocumentTitle
+          // （dsh-client-ui-layout），它每逢会话标题变化就重写 `document.title`。原先那
+          // 一次赋值会被它随后的写入覆盖，于是会话标题一生成，标签页就变成
+          // 「会话标题 — DeepSeek Harness」。这里接管 document 的 title 访问器：产品写
+          // 进来的值被丢弃，<title> 恒为品牌名。第一次写入仍走产品自己的访问器，落到
+          // 元素上的就是同一个值；卸载时删掉这层影子属性再还原标题。
           if (typeof document !== 'undefined') {
             const previousTitle = document.title
+            const ownDescriptor = Object.getOwnPropertyDescriptor(document, 'title')
+            const held = {
+              configurable: true,
+              get: () => DOCUMENT_TITLE,
+              // 产品写进来的值被丢弃：持有期间 <title> 只属于品牌名。
+              set: () => {},
+            }
             document.title = DOCUMENT_TITLE
-            ctx.effect(() => () => { document.title = previousTitle }, 'dsh-unknowcao-skin: 页面标题')
+            Object.defineProperty(document, 'title', held)
+            ctx.effect(() => () => {
+              // HMR 重挂时后来者可能已经接管；只有自己还是主人时才拆，免得把新的拆掉。
+              if (Object.getOwnPropertyDescriptor(document, 'title')?.get !== held.get) return
+              if (ownDescriptor === undefined) delete document.title
+              else Object.defineProperty(document, 'title', ownDescriptor)
+              document.title = previousTitle
+            }, 'dsh-unknowcao-skin: 页面标题')
           }
           for (const [key, component] of BRAND_SLOTS) {
             ctx.effect(
