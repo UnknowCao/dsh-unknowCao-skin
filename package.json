@@ -1,6 +1,6 @@
 {
   "name": "dsh-unknowcao-skin",
-  "version": "0.5.1",
+  "version": "0.5.0",
   "description": "蔚来 · 地平线 / Blue Sky Coming — a DSH Web GUI skin built on NIO's publicly stated brand language (sky above, earth below, horizon between). Near-white ground in light, near-black cockpit in dark, with exactly one saturated thing on screen: an azure accent family on user bubbles, selection and the primary button. The surface ramp is deliberately near-neutral (6–15% saturation) so hierarchy is carried by lightness rather than hue, and a faint sky-light wash from the top of the frame gives the flat plane a light direction. Colour is authored with WCAG luminance as the invariant, not HSL lightness, so the ramp steps shared by both modes never lose contrast. Four layers: the 13 published alias tokens go through ctx.theme.overrideTokens() (the sanctioned third-party theme extension point, applied inline on body); the design system's own --dsw-static-* ramps plus its typography variables are rebound from one fiber-owned stylesheet; the sky-light wash sits on body::after; and the brand the GUI shows — sidebar wordmark, sidebar mark, blank-session hero mark and the browser tab title — is replaced with your own, drawn from scratch. Colour values are an original reading of that language, not NIO's official specification, and no NIO assets are shipped. No product class selector is ever targeted, no DOM is relocated, no layout is touched. Install and it is on; unmount it and the page is byte-for-byte back to what it was.",
   "license": "MIT",
   "type": "module",
