@@ -1,4 +1,4 @@
-# dsh-paper-skin · Blue Sky Coming · Horizon
+# dsh-unknowcao-skin · Blue Sky Coming · Horizon
 
 > A DSH Web GUI skin: **near-white ground, near-black cockpit, one azure accent** — and the DeepSeek branding the GUI shows replaced with your own. Install it and it is on; unmount it and the page is back to what it was.
 
@@ -6,7 +6,7 @@
 near-white #F7F9FC    ink #080C12    azure #1B5FC1    cockpit #0C1119
 ```
 
-> **Note: the package and directory are still `dsh-paper-skin`** (it started as a paper skin). The content has been re-skinned twice; the name never followed, because renaming touches the profile's dependency and its `dsh.profile.bundles` list. Say the word and it is one command.
+> **Note: the package and directory are still `dsh-unknowcao-skin`** (it started as a paper skin). The content has been re-skinned twice; the name never followed, because renaming touches the profile's dependency and its `dsh.profile.bundles` list. Say the word and it is one command.
 
 ---
 
@@ -108,17 +108,17 @@ Check 4 is the real safety net: the system layer is coupled to 103 internal prod
 ## Install
 
 ```sh
-dsh plugin --profile web add link:/path/to/dsh-paper-skin
+dsh plugin --profile web add link:/path/to/dsh-unknowcao-skin
 ```
 
-> **pnpm 12:** `pnpm add <local path>` fails with `ERR_PNPM_PACKAGE_MANAGER_ADD_RESOLVE_LATEST` for `file:`, `link:`, absolute and relative specs alike. Declare `"dsh-paper-skin": "link:<absolute path>"` in the profile `package.json` and run `dsh plugin --profile web install` — `dsh plugin` forwards `install` to pnpm and still reconciles `dsh.profile.bundles`.
+> **pnpm 12:** `pnpm add <local path>` fails with `ERR_PNPM_PACKAGE_MANAGER_ADD_RESOLVE_LATEST` for `file:`, `link:`, absolute and relative specs alike. Declare `"dsh-unknowcao-skin": "link:<absolute path>"` in the profile `package.json` and run `dsh plugin --profile web install` — `dsh plugin` forwards `install` to pnpm and still reconciles `dsh.profile.bundles`.
 
 A new bundle's patch is composed at boot, so **restart the profile once**.
 
 ### Uninstall
 
 ```sh
-dsh plugin --profile web remove dsh-paper-skin
+dsh plugin --profile web remove dsh-unknowcao-skin
 ```
 
 Restart and the interface is byte-for-byte back to its previous palette.
@@ -144,7 +144,7 @@ Restart and the interface is byte-for-byte back to its previous palette.
 - **The first paint flashes the stock palette.** The product's only pre-plugin palette hook reads the built-in `ui-theme` setting; a third-party skin cannot get into it, and `immediately: true` only prefetches the module.
 - **Two skin plugins have no arbitration.** The contract layer is namespaced by `source` and stacks cleanly; the system layer is plain CSS and wins by specificity and load order.
 - **The system layer is coupled to internal product variable names.** An upstream rename does not error, it degrades silently; the audit's coverage check is the only alarm.
-- **The name no longer matches the content.** The package is `dsh-paper-skin` and the theme is azure. Renaming touches both the profile dependency and `dsh.profile.bundles`.
+- **The name no longer matches the content.** The package is `dsh-unknowcao-skin` and the theme is azure. Renaming touches both the profile dependency and `dsh.profile.bundles`.
 - **NIO is someone else's brand.** This skin is a personal stylization built on publicly stated brand language; it ships no official assets, is not affiliated with or endorsed by NIO, and its colour values are not the official specification. Think about that before distributing it.
 - **Web GUI only.**
 
@@ -153,7 +153,7 @@ Restart and the interface is byte-for-byte back to its previous palette.
 ## Layout
 
 ```
-dsh-paper-skin/
+dsh-unknowcao-skin/
 ├── package.json            dsh.bundle.patch + dsh.client.platform: web
 ├── cordis.patch.yml        inserts one row (the package root) into the profile
 ├── index.js                host half: one boot log line, deliberately nothing else
@@ -161,7 +161,7 @@ dsh-paper-skin/
 └── test/palette-audit.mjs  audit: loads the real bundle, reconciles coverage / drift / contrast / brand
 ```
 
-The host half exists for one reason — **how the browser half is discovered**. client-modules resolves each *mounted row* back to its package.json, finds `dsh.client.platform: web` there, and only then serves `exports["./client"]` at `/plugins/dsh-paper-skin/client.js`. One row buys both faces.
+The host half exists for one reason — **how the browser half is discovered**. client-modules resolves each *mounted row* back to its package.json, finds `dsh.client.platform: web` there, and only then serves `exports["./client"]` at `/plugins/dsh-unknowcao-skin/client.js`. One row buys both faces.
 
 ## License
 

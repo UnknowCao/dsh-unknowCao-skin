@@ -1,5 +1,5 @@
 /**
- * dsh-paper-skin — palette audit.
+ * dsh-unknowcao-skin — palette audit.
  *
  * Loads the real client bundle in a stubbed browser (a fake `window.__ModuleLoader__`
  * and a fake `document`), captures the two things the skin actually produces — the
@@ -27,7 +27,7 @@
  * The product side is optional: without it, checks 1, 2 and 4 still run and the rest
  * are reported as skipped.
  *
- * @module dsh-paper-skin/test/palette-audit
+ * @module dsh-unknowcao-skin/test/palette-audit
  */
 
 import { existsSync, readFileSync } from 'node:fs'
@@ -67,7 +67,7 @@ async function loadBundle() {
   // The bundle is side-effecting; importing it is the point.
   await import(pathToFileURL(join(PLUGIN, 'client.js')).href)
   if (definition === undefined) throw new Error('client.js never called window.__ModuleLoader__.load')
-  if (definition.id !== 'dsh-paper-skin') {
+  if (definition.id !== 'dsh-unknowcao-skin') {
     throw new Error(`client bundle id is ${JSON.stringify(definition.id)}, expected the package name`)
   }
   // The kernel provides `react`. A shim is enough to observe what the brand layer
@@ -230,7 +230,7 @@ function resolvePalette(product, skin, inline, mode) {
 const bundle = await loadBundle()
 
 // ── loadable ──
-pass('loadable', `bundle id ${JSON.stringify('dsh-paper-skin')}, style element id ${JSON.stringify(bundle.styleId)}`)
+pass('loadable', `bundle id ${JSON.stringify('dsh-unknowcao-skin')}, style element id ${JSON.stringify(bundle.styleId)}`)
 if (bundle.tokens === undefined) fail('loadable', 'apply() never called theme.overrideTokens')
 else pass('loadable', `token layer source ${JSON.stringify(bundle.tokens.source)} with ${Object.keys(bundle.tokens.map).length} tokens`)
 if (bundle.effects.length < 2) fail('loadable', `expected 2 fiber effects, got ${bundle.effects.length}`)

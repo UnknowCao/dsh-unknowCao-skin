@@ -1,4 +1,4 @@
-# dsh-paper-skin · 蔚来 · 地平线
+# dsh-unknowcao-skin · 蔚来 · 地平线
 
 > DSH Web GUI 皮肤：**近白底、近黑座舱、一支天蓝点睛**，界面上显示的 DeepSeek 品牌字样已换成自己的。装上即生效，卸载即还原。
 
@@ -6,7 +6,7 @@
 近白 #F7F9FC    近黑 #080C12    天蓝 #1B5FC1    座舱底 #0C1119
 ```
 
-> **注意：包名与目录仍是 `dsh-paper-skin`（最早是宣纸皮肤）。** 皮肤内容换了两轮，名字一直没跟着改——改名要动 profile 里的依赖和 bundles 名单，我没擅自动。想改说一声，一条命令的事。
+> **注意：包名与目录仍是 `dsh-unknowcao-skin`（最早是宣纸皮肤）。** 皮肤内容换了两轮，名字一直没跟着改——改名要动 profile 里的依赖和 bundles 名单，我没擅自动。想改说一声，一条命令的事。
 
 ---
 
@@ -108,17 +108,17 @@ node test/palette-audit.mjs [path/to/dsh-client-ui-theme/lib/client.js]
 ## 安装
 
 ```sh
-dsh plugin --profile web add link:C:/Users/MAC/Desktop/DSH/dsh-paper-skin
+dsh plugin --profile web add link:C:/Users/MAC/Desktop/DSH/dsh-unknowcao-skin
 ```
 
-> **pnpm 12 注意**：`pnpm add <本地路径>` 会报 `ERR_PNPM_PACKAGE_MANAGER_ADD_RESOLVE_LATEST`（`file:` / `link:` / 绝对 / 相对路径全失败）。可靠做法是在 profile 的 `package.json` 写 `"dsh-paper-skin": "link:<绝对路径>"`，再跑 `dsh plugin --profile web install`——`install` 会被转发给 pnpm，并照样自动 reconcile `dsh.profile.bundles`。
+> **pnpm 12 注意**：`pnpm add <本地路径>` 会报 `ERR_PNPM_PACKAGE_MANAGER_ADD_RESOLVE_LATEST`（`file:` / `link:` / 绝对 / 相对路径全失败）。可靠做法是在 profile 的 `package.json` 写 `"dsh-unknowcao-skin": "link:<绝对路径>"`，再跑 `dsh plugin --profile web install`——`install` 会被转发给 pnpm，并照样自动 reconcile `dsh.profile.bundles`。
 
 新 bundle 的 patch 在启动时合成，**装完要重启一次 profile**（GUI：鲸湾 → 洄游）。
 
 ### 卸载
 
 ```sh
-dsh plugin --profile web remove dsh-paper-skin
+dsh plugin --profile web remove dsh-unknowcao-skin
 ```
 
 重启后逐字节回到原配色。
@@ -144,7 +144,7 @@ dsh plugin --profile web remove dsh-paper-skin
 - **首屏会闪一下原配色。** 产品的插件前内联引导只认内置 ui-theme 设置，第三方皮肤挤不进去；`immediately: true` 只能把模块预取提前，消不掉那一帧。
 - **两个皮肤插件之间没有仲裁。** 契约层按 `source` 命名可叠加；系统层是纯 CSS，只按优先级和加载顺序取胜。
 - **系统层绑在产品内部变量名上。** 上游改名不报错，只会静默失效；审计的覆盖检查是唯一的报警器，得有人跑。
-- **名字与内容已经不符。** 包名叫 `dsh-paper-skin`，内容是蔚来气质。改名要同时动 profile 依赖与 `dsh.profile.bundles`。
+- **名字与内容已经不符。** 包名叫 `dsh-unknowcao-skin`，内容是蔚来气质。改名要同时动 profile 依赖与 `dsh.profile.bundles`。
 - **蔚来是别人的品牌。** 这套皮肤只是拿公开的品牌语言做个人化风格，不含任何官方图形资源，与蔚来无关联、也未经其认可，色值不是官方标准色。要分发前请先想清楚这一点。
 - **只管 Web GUI。**
 
@@ -153,7 +153,7 @@ dsh plugin --profile web remove dsh-paper-skin
 ## 结构
 
 ```
-dsh-paper-skin/
+dsh-unknowcao-skin/
 ├── package.json            dsh.bundle.patch + dsh.client.platform: web
 ├── cordis.patch.yml        往 profile 里插一行（包根）
 ├── index.js                宿主半：一行启动日志，刻意不做别的
@@ -161,7 +161,7 @@ dsh-paper-skin/
 └── test/palette-audit.mjs  审计：加载真 bundle，对账覆盖率 / 漂移 / 对比度 / 品牌槽
 ```
 
-宿主半存在的唯一原因是**浏览器半的发现方式**：client-modules 顺着"已挂载的行"回溯到包的 `package.json`，读到 `dsh.client.platform: web` 才把 `exports["./client"]` 服务到 `/plugins/dsh-paper-skin/client.js`。一行同时买到两个面。
+宿主半存在的唯一原因是**浏览器半的发现方式**：client-modules 顺着"已挂载的行"回溯到包的 `package.json`，读到 `dsh.client.platform: web` 才把 `exports["./client"]` 服务到 `/plugins/dsh-unknowcao-skin/client.js`。一行同时买到两个面。
 
 ## 许可
 

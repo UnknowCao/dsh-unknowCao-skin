@@ -1,5 +1,5 @@
 /**
- * dsh-paper-skin host half — 蔚来 · 地平线 / Blue Sky Coming.
+ * dsh-unknowcao-skin host half — 蔚来 · 地平线 / Blue Sky Coming.
  *
  * The skin itself lives entirely in client.js. This half exists because of how
  * the browser half is discovered: client-modules walks the mounted rows, reads
@@ -22,10 +22,10 @@
  * Net effect: one log line so the row's activation is visible in the server
  * log, and nothing that can fail at runtime.
  *
- * @module dsh-paper-skin
+ * @module dsh-unknowcao-skin
  */
 
-export const name = 'dsh-paper-skin'
+export const name = 'dsh-unknowcao-skin'
 
 /**
  * Activate the plugin. Cordis unloads it with the profile; there is nothing to
@@ -34,5 +34,5 @@ export const name = 'dsh-paper-skin'
  * @param {import('@deepseek-ai/cordis').Context} ctx - host context.
  */
 export function apply(ctx) {
-  ctx.logger?.info?.('dsh-paper-skin: skin mounted (tokens + ramps + sky light + brand)')
+  ctx.logger?.info?.('dsh-unknowcao-skin: skin mounted (tokens + ramps + sky light + brand)')
 }

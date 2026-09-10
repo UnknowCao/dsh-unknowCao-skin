@@ -1,4 +1,4 @@
-# dsh-paper-skin bundle patch — the layer this package contributes to a profile.
+# dsh-unknowcao-skin bundle patch — the layer this package contributes to a profile.
 #
 # One row, one purpose: mount the package root (index.js) in the host process.
 # The row publishes no service, so it sits loose — no isolate realm, nothing to
@@ -7,10 +7,10 @@
 # The row is also what makes the browser half discoverable. client-modules
 # resolves every mounted row's module specifier back to its package.json,
 # finds `dsh.client.platform: web` there, and serves `exports["./client"]`
-# (client.js) at /plugins/dsh-paper-skin/client.js for the web kernel to load.
+# (client.js) at /plugins/dsh-unknowcao-skin/client.js for the web kernel to load.
 # Drop this row and both halves disappear, which is why the host half stays
 # even though a skin itself is entirely client-side.
 
 - insert:
     - id: paper-skin
-      name: 'dsh-paper-skin'
+      name: 'dsh-unknowcao-skin'

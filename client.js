@@ -1,4 +1,4 @@
-/* dsh-paper-skin client half — 蔚来 · 地平线 / a NIO-inspired sky-and-horizon skin.
+/* dsh-unknowcao-skin client half — 蔚来 · 地平线 / a NIO-inspired sky-and-horizon skin.
  *
  * 主题取自蔚来公开的品牌语言（「Blue Sky Coming」：标识上半是天、下半是地，天地
  * 交汇处是地平线）。蔚来没有公开可核实的标准色值，下面这套是照那份语言自己配的，
@@ -43,11 +43,11 @@
  *     页面逐字节回到原样。
  *
  * Delivery format matches the modules node half: a __ModuleLoader__ bundle served at
- * /plugins/dsh-paper-skin/client.js. Nothing from @deepseek-ai is imported; `react` is
+ * /plugins/dsh-unknowcao-skin/client.js. Nothing from @deepseek-ai is imported; `react` is
  * the kernel-provided module and only the brand layer needs it.
  */
 window.__ModuleLoader__.load({
-  id: 'dsh-paper-skin',
+  id: 'dsh-unknowcao-skin',
   factory: (require) => {
     // Kernel-provided module. 颜色、排版、天光三层都是纯 CSS，不需要 React。
     const React = require('react')
@@ -279,7 +279,7 @@ html body[data-ds-dark-theme]::after {
       if (styleElement !== null) return styleElement
       if (typeof document === 'undefined' || document.head === null) return null
       const element = document.createElement('style')
-      element.id = 'dsh-paper-skin'
+      element.id = 'dsh-unknowcao-skin'
       element.textContent = SKIN_CSS
       document.head.appendChild(element)
       styleElement = element
@@ -375,7 +375,7 @@ html body[data-ds-dark-theme]::after {
     ]
 
     return {
-      name: 'dsh-paper-skin',
+      name: 'dsh-unknowcao-skin',
       // Both are hard dependencies: with no theme registry the contract layer has
       // nowhere to go, and with no slot registry the brand layer cannot register.
       // Cordis holds the plugin until they exist rather than applying into a no-op.
@@ -386,14 +386,14 @@ html body[data-ds-dark-theme]::after {
           ctx.effect(() => () => {
             if (styles.parentNode !== null) styles.parentNode.removeChild(styles)
             styleElement = null
-          }, 'dsh-paper-skin: 皮肤样式表')
+          }, 'dsh-unknowcao-skin: 皮肤样式表')
         }
         // Contract layer. The layer identity is the package name, so a re-apply
         // (HMR, row restart) replaces this layer instead of stacking sky on sky;
         // the disposer is what makes unloading restore the palette.
         ctx.effect(
-          () => ctx.theme.overrideTokens('dsh-paper-skin', ALIAS_TOKENS),
-          'dsh-paper-skin: 蔚来契约层',
+          () => ctx.theme.overrideTokens('dsh-unknowcao-skin', ALIAS_TOKENS),
+          'dsh-unknowcao-skin: 蔚来契约层',
         )
         // Brand layer. `slots.inject` waits for each declaration, so registration
         // lands at the right lifetime and collapses with the slot; the effect hands
@@ -405,12 +405,12 @@ html body[data-ds-dark-theme]::after {
           if (typeof document !== 'undefined') {
             const previousTitle = document.title
             document.title = DOCUMENT_TITLE
-            ctx.effect(() => () => { document.title = previousTitle }, 'dsh-paper-skin: 页面标题')
+            ctx.effect(() => () => { document.title = previousTitle }, 'dsh-unknowcao-skin: 页面标题')
           }
           for (const [key, component] of BRAND_SLOTS) {
             ctx.effect(
               () => ctx.slots.inject(key, () => ctx.slots.register({ name: key }, component)),
-              `dsh-paper-skin: 品牌槽 ${key}`,
+              `dsh-unknowcao-skin: 品牌槽 ${key}`,
             )
           }
         }
